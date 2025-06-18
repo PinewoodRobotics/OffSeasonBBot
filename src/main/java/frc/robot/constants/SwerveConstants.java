@@ -80,11 +80,11 @@ public class SwerveConstants {
 
   // stats used by SwerveSubsystem for deadbanding
   public static final double kXSpeedDeadband = 0.05;
-  public static final double kXSpeedMinValue = 0;
+  public static final double kXSpeedMinValue = 0.03;
   public static final double kYSpeedDeadband = 0.05;
-  public static final double kYSpeedMinValue = 0;
+  public static final double kYSpeedMinValue = 0.03;
   public static final double kRotDeadband = 0.05;
-  public static final double kRotMinValue = 0;
+  public static final double kRotMinValue = 0.03;
 
   public static final int kDriveCurrentLimit = 30;
 

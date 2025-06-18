@@ -6,12 +6,14 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.SwerveConstants;
+import frc.robot.hardware.AHRSGyro;
 import frc.robot.hardware.RobotWheelMover;
 import java.util.Optional;
 import org.pwrup.SwerveDrive;
 import org.pwrup.util.Config;
 import org.pwrup.util.Vec2;
 import org.pwrup.util.Wheel;
+import pwrup.frc.core.geometry.RotationMath;
 import pwrup.frc.core.hardware.sensor.IGyroscopeLike;
 
 /**
@@ -30,6 +32,16 @@ public class SwerveSubsystem extends SubsystemBase {
   private boolean masterDriveRawSwitch = false;
 
   private final SwerveDriveKinematics kinematics;
+
+  private static SwerveSubsystem instance;
+
+  public static SwerveSubsystem getInstance() {
+    if (instance == null) {
+      instance = new SwerveSubsystem(AHRSGyro.getInstance());
+    }
+
+    return instance;
+  }
 
   public SwerveSubsystem(IGyroscopeLike gyro) {
     this.m_gyro = gyro;
@@ -113,18 +125,8 @@ public class SwerveSubsystem extends SubsystemBase {
         velocity,
         rotation,
         speed,
-        Math.toRadians(wrapTo180(getGlobalGyroAngle()))
+        Math.toRadians(RotationMath.wrapTo180(getGlobalGyroAngle()))
       );
-  }
-
-  // TODO: move to proper core
-  public static double wrapTo180(double angle) {
-    double newAngle = (angle + 180) % 360;
-    while (newAngle < 0) {
-      newAngle += 360;
-    }
-
-    return newAngle - 180;
   }
 
   public void drive(
@@ -171,7 +173,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void resetGyro() {
-    gyroOffset = -m_gyro.getYaw();
+    resetGyro(0);
   }
 
   public void resetGyro(double offset) {
@@ -179,10 +181,10 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public double getGlobalGyroAngle() {
-    return wrapTo180(m_gyro.getYaw() + gyroOffset);
+    return RotationMath.wrapTo180(m_gyro.getYaw() + gyroOffset);
   }
 
-  private void masterDriveRawSwitch(boolean value) {
+  public void masterDriveRawSwitch(boolean value) {
     this.masterDriveRawSwitch = value;
     if (value) {
       driveRaw(new Vec2(0, 0), 0, 0); // make sure it applies immediately

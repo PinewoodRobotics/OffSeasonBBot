@@ -15,6 +15,16 @@ public class AHRSGyro implements IGyroscopeLike, IDataSubsystem {
   private double yOffset = 0;
   private double zOffset = 0;
 
+  private static AHRSGyro instance;
+
+  public static AHRSGyro getInstance() {
+    if (instance == null) {
+      instance = new AHRSGyro(I2C.Port.kMXP);
+    }
+
+    return instance;
+  }
+
   public AHRSGyro(I2C.Port i2c_port_id) {
     this.m_gyro = new AHRS(i2c_port_id);
   }

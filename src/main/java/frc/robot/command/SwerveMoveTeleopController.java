@@ -44,7 +44,7 @@ public class SwerveMoveTeleopController extends Command {
         )
       ),
       joystickRotation,
-      1
+      0.2
     );
   }
 
