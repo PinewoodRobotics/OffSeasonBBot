@@ -57,6 +57,8 @@ public class Robot extends TimedRobot {
           m_controller
         )
       );
+
+    setControllerBindings();
   }
 
   public void setControllerBindings() {

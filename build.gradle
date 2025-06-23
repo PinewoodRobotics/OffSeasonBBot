@@ -124,7 +124,7 @@ def generateJsonConfig() {
 
     try {
         exec {
-            commandLine "npx", "tsx", "config/"
+            commandLine "npx", "--offline", "tsx", "config/"
             standardOutput = stdout
             errorOutput = stderr
             ignoreExitValue = false

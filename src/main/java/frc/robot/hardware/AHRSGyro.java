@@ -6,7 +6,7 @@ import proto.ImuOuterClass.Imu;
 import proto.util.Position.Position3d;
 import proto.util.Vector.Vector3;
 import pwrup.frc.core.hardware.sensor.IGyroscopeLike;
-import pwrup.frc.core.util.interfaces.IDataSubsystem;
+import pwrup.frc.core.online.raspberrypi.coms.IDataSubsystem;
 
 public class AHRSGyro implements IGyroscopeLike, IDataSubsystem {
 

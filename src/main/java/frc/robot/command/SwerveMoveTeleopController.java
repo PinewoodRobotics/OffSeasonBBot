@@ -24,22 +24,19 @@ public class SwerveMoveTeleopController extends Command {
 
   @Override
   public void execute() {
-    double joystickRotation = TranslationMath.deadband(
-      controller.getRawAxis(XboxController.Axis.kRightX.value) * -1,
-      SwerveConstants.kRotDeadband,
+    double joystickRotation = TranslationMath.minValue(
+      controller.getRawAxis(XboxController.Axis.kRightX.value),
       SwerveConstants.kRotMinValue
     );
 
     m_swerveSubsystem.drive(
       new Vec2(
-        TranslationMath.deadband(
-          controller.getRawAxis(XboxController.Axis.kLeftY.value),
-          SwerveConstants.kXSpeedDeadband,
+        TranslationMath.minValue(
+          controller.getRawAxis(XboxController.Axis.kLeftY.value) * -1,
           SwerveConstants.kXSpeedMinValue
         ),
-        TranslationMath.deadband(
-          controller.getRawAxis(XboxController.Axis.kLeftX.value) * -1,
-          SwerveConstants.kYSpeedDeadband,
+        TranslationMath.minValue(
+          controller.getRawAxis(XboxController.Axis.kLeftX.value),
           SwerveConstants.kYSpeedMinValue
         )
       ),
