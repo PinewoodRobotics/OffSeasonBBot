@@ -69,6 +69,7 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'com.github.godbrigero:autobahn_client:639ac3e8e6'
 }
 
 buildDynamically("./config.ini")

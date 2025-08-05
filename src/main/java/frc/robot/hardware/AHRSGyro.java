@@ -1,8 +1,10 @@
 package frc.robot.hardware;
 
 import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.I2C;
-import proto.ImuOuterClass.Imu;
+import proto.sensor.GeneralSensorDataOuterClass.GeneralSensorData;
+import proto.sensor.Imu.ImuData;
 import proto.util.Position.Position3d;
 import proto.util.Vector.Vector3;
 import pwrup.frc.core.hardware.sensor.IGyroscopeLike;
@@ -36,9 +38,9 @@ public class AHRSGyro implements IGyroscopeLike, IDataSubsystem {
   @Override
   public double[] getYPR() {
     return new double[] {
-      m_gyro.getYaw(),
-      m_gyro.getPitch(),
-      m_gyro.getRoll(),
+        m_gyro.getYaw(),
+        m_gyro.getPitch(),
+        m_gyro.getRoll(),
     };
   }
 
@@ -53,9 +55,9 @@ public class AHRSGyro implements IGyroscopeLike, IDataSubsystem {
   @Override
   public double[] getLinearAccelerationXYZ() {
     return new double[] {
-      m_gyro.getWorldLinearAccelX(),
-      m_gyro.getWorldLinearAccelY(),
-      m_gyro.getWorldLinearAccelZ(),
+        m_gyro.getWorldLinearAccelX(),
+        m_gyro.getWorldLinearAccelY(),
+        m_gyro.getWorldLinearAccelZ(),
     };
   }
 
@@ -70,28 +72,28 @@ public class AHRSGyro implements IGyroscopeLike, IDataSubsystem {
   @Override
   public double[] getQuaternion() {
     return new double[] {
-      m_gyro.getQuaternionW(),
-      m_gyro.getQuaternionX(),
-      m_gyro.getQuaternionY(),
-      m_gyro.getQuaternionZ(),
+        m_gyro.getQuaternionW(),
+        m_gyro.getQuaternionX(),
+        m_gyro.getQuaternionY(),
+        m_gyro.getQuaternionZ(),
     };
   }
 
   @Override
   public double[] getLinearVelocityXYZ() {
     return new double[] {
-      m_gyro.getVelocityX(),
-      m_gyro.getVelocityY(),
-      m_gyro.getVelocityZ(),
+        m_gyro.getVelocityX(),
+        m_gyro.getVelocityY(),
+        m_gyro.getVelocityZ(),
     };
   }
 
   @Override
   public double[] getPoseXYZ() {
     return new double[] {
-      m_gyro.getDisplacementX() + xOffset,
-      m_gyro.getDisplacementY() + yOffset,
-      m_gyro.getDisplacementZ() + zOffset,
+        m_gyro.getDisplacementX() + xOffset,
+        m_gyro.getDisplacementY() + yOffset,
+        m_gyro.getDisplacementZ() + zOffset,
     };
   }
 
@@ -107,48 +109,39 @@ public class AHRSGyro implements IGyroscopeLike, IDataSubsystem {
 
   @Override
   public byte[] getRawConstructedProtoData() {
-    return Imu
-      .newBuilder()
-      .setPosition(
-        Position3d
-          .newBuilder()
-          .setPosition(
+    return GeneralSensorData.newBuilder().setImu(ImuData.newBuilder()
+        .setVelocity(Vector3
+            .newBuilder()
+            .setX(m_gyro.getVelocityX())
+            .setY(m_gyro.getVelocityY())
+            .setZ(m_gyro.getVelocityZ())
+            .build())
+        .setPosition(
+            Position3d
+                .newBuilder()
+                .setPosition(
+                    Vector3
+                        .newBuilder()
+                        .setX(m_gyro.getDisplacementX())
+                        .setY(m_gyro.getDisplacementY())
+                        .setZ(m_gyro.getDisplacementZ())
+                        .build())
+                .setDirection(
+                    Vector3
+                        .newBuilder()
+                        .setX(m_gyro.getYaw())
+                        .setY(m_gyro.getPitch())
+                        .setZ(m_gyro.getRoll())
+                        .build())
+                .build())
+        .setAcceleration(
             Vector3
-              .newBuilder()
-              .setX(m_gyro.getDisplacementX())
-              .setY(m_gyro.getDisplacementY())
-              .setZ(m_gyro.getDisplacementZ())
-              .build()
-          )
-          .setDirection(
-            Vector3
-              .newBuilder()
-              .setX(m_gyro.getYaw())
-              .setY(m_gyro.getPitch())
-              .setZ(m_gyro.getRoll())
-              .build()
-          )
-          .build()
-      )
-      .setVelocity(
-        Vector3
-          .newBuilder()
-          .setX(m_gyro.getVelocityX())
-          .setY(m_gyro.getVelocityY())
-          .setZ(m_gyro.getVelocityZ())
-          .build()
-      )
-      .setAcceleration(
-        Vector3
-          .newBuilder()
-          .setX(m_gyro.getWorldLinearAccelX())
-          .setY(m_gyro.getWorldLinearAccelY())
-          .setZ(m_gyro.getWorldLinearAccelZ())
-          .build()
-      )
-      .setTimestamp(System.currentTimeMillis())
-      .build()
-      .toByteArray();
+                .newBuilder()
+                .setX(m_gyro.getWorldLinearAccelX())
+                .setY(m_gyro.getWorldLinearAccelY())
+                .setZ(m_gyro.getWorldLinearAccelZ())
+                .build()))
+        .setTimestamp(System.currentTimeMillis()).build().toByteArray();
   }
 
   @Override
