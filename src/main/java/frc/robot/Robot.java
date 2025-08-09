@@ -7,14 +7,17 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import autobahn.client.AutobahnClient;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.BotConstants;
+import frc.robot.constants.PiConstants;
+import frc.robot.subsystem.background.GlobalPosition;
 
 public class Robot extends LoggedRobot {
 
   private Command m_autonomousCommand;
+  public static AutobahnClient commuincation = new AutobahnClient(PiConstants.mainPiAddr);
 
   private RobotContainer m_robotContainer;
   // final XboxController m_controller = new XboxController(3);
@@ -40,6 +43,7 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start();
+    commuincation.begin().join();
   }
 
   @Override
@@ -50,7 +54,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    Logger.recordOutput("RobotPose", new Pose2d());
+    Logger.recordOutput("RobotPose", GlobalPosition.Get());
   }
 
   @Override
@@ -81,35 +85,35 @@ public class Robot extends LoggedRobot {
     }
 
     /*
-    SwerveSubsystem
-        .getInstance()
-        .setDefaultCommand(
-            new SwerveMoveTeleopController(
-                SwerveSubsystem.getInstance(),
-                m_controller));
-    
-    setControllerBindings();
+     * SwerveSubsystem
+     * .getInstance()
+     * .setDefaultCommand(
+     * new SwerveMoveTeleopController(
+     * SwerveSubsystem.getInstance(),
+     * m_controller));
+     * 
+     * setControllerBindings();
      */
   }
 
   public void setControllerBindings() {
     /*
-    new JoystickButton(m_controller, XboxController.Button.kA.value)
-        .onTrue(
-            SwerveSubsystem
-                .getInstance()
-                .runOnce(() -> {
-                  SwerveSubsystem.getInstance().resetGyro();
-                }));
-    
-    new JoystickButton(m_controller, XboxController.Button.kB.value)
-        .onTrue(
-            SwerveSubsystem
-                .getInstance()
-                .runOnce(() -> {
-                  SwerveSubsystem.getInstance().masterDriveRawSwitch(true);
-                }));
-                 */
+     * new JoystickButton(m_controller, XboxController.Button.kA.value)
+     * .onTrue(
+     * SwerveSubsystem
+     * .getInstance()
+     * .runOnce(() -> {
+     * SwerveSubsystem.getInstance().resetGyro();
+     * }));
+     * 
+     * new JoystickButton(m_controller, XboxController.Button.kB.value)
+     * .onTrue(
+     * SwerveSubsystem
+     * .getInstance()
+     * .runOnce(() -> {
+     * SwerveSubsystem.getInstance().masterDriveRawSwitch(true);
+     * }));
+     */
   }
 
   @Override

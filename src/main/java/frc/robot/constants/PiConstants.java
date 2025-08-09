@@ -11,4 +11,5 @@ public class PiConstants {
   public static List<String> poseSubscribeTopics = new ArrayList<>(
       Arrays.asList(new String[] { "position-extrapolator/pose" }));
   public static Address mainPiAddr = new Address("10.47.65.7", 8080);
+  public static String piTechnicalLogTopic = "pi-technical-log";
 }

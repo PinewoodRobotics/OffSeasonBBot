@@ -1,4 +1,4 @@
-package frc.robot.subsystem;
+package frc.robot.subsystem.background;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.constants.BotConstants.Mode;
 import frc.robot.constants.PiConstants;
 import proto.util.Position.Position2d;
@@ -18,29 +19,34 @@ import proto.util.Position.RobotPosition;
 import proto.util.Vector.Vector2;
 
 public class GlobalPosition extends SubsystemBase {
-  private static AutobahnClient client;
-  private static Pose2d lastEstimatedRobotPose;
+  private static Pose2d lastEstimatedRobotPose = new Pose2d();
   private static long lastTimeMs;
   private static double confidence;
+  private static GlobalPosition instance;
 
-  public static GlobalPosition Build(Mode botMode) {
-    switch (botMode) {
-      case SIM:
-        GlobalPosition.SetClient(new AutobahnClient(new Address("localhost", 8080)));
-        break;
-      default:
-        break;
+  public static GlobalPosition GetInstance(Mode botMode) {
+    if (instance == null) {
+      switch (botMode) {
+        case SIM:
+          GlobalPosition.SetClient(new AutobahnClient(new Address("localhost", 8080)));
+          break;
+        default:
+          break;
+      }
+
+      instance = new GlobalPosition();
     }
 
-    return new GlobalPosition();
+    return instance;
   }
 
   public static void SetClient(AutobahnClient client) {
-    GlobalPosition.client = client;
+    Robot.commuincation = client;
   }
 
   public static void Initialize() {
-    client.subscribe(PiConstants.poseSubscribeTopics, NamedCallback.FromConsumer(GlobalPosition::subscription));
+    Robot.commuincation.subscribe(PiConstants.poseSubscribeTopics,
+        NamedCallback.FromConsumer(GlobalPosition::subscription));
   }
 
   private static void subscription(byte[] data) {
