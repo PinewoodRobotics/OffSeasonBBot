@@ -41,11 +41,11 @@ public class GlobalPosition extends SubsystemBase {
   }
 
   public static void SetClient(AutobahnClient client) {
-    Robot.commuincation = client;
+    Robot.communication = client;
   }
 
   public static void Initialize() {
-    Robot.commuincation.subscribe(PiConstants.poseSubscribeTopics,
+    Robot.communication.subscribe(PiConstants.poseSubscribeTopics,
         NamedCallback.FromConsumer(GlobalPosition::subscription));
   }
 

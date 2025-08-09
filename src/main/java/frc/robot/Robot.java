@@ -17,7 +17,7 @@ import frc.robot.subsystem.background.GlobalPosition;
 public class Robot extends LoggedRobot {
 
   private Command m_autonomousCommand;
-  public static AutobahnClient commuincation = new AutobahnClient(PiConstants.mainPiAddr);
+  public static AutobahnClient communication = new AutobahnClient(PiConstants.mainPiAddr);
 
   private RobotContainer m_robotContainer;
   // final XboxController m_controller = new XboxController(3);
@@ -35,7 +35,7 @@ public class Robot extends LoggedRobot {
         break;
 
       case REPLAY:
-        setUseTiming(false); // Run as fast as possible
+        setUseTiming(false);
         String logPath = LogFileUtil.findReplayLog();
         Logger.setReplaySource(new WPILOGReader(logPath));
         Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
@@ -43,7 +43,7 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start();
-    commuincation.begin().join();
+    communication.begin().join();
   }
 
   @Override
@@ -83,37 +83,9 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    /*
-     * SwerveSubsystem
-     * .getInstance()
-     * .setDefaultCommand(
-     * new SwerveMoveTeleopController(
-     * SwerveSubsystem.getInstance(),
-     * m_controller));
-     * 
-     * setControllerBindings();
-     */
   }
 
   public void setControllerBindings() {
-    /*
-     * new JoystickButton(m_controller, XboxController.Button.kA.value)
-     * .onTrue(
-     * SwerveSubsystem
-     * .getInstance()
-     * .runOnce(() -> {
-     * SwerveSubsystem.getInstance().resetGyro();
-     * }));
-     * 
-     * new JoystickButton(m_controller, XboxController.Button.kB.value)
-     * .onTrue(
-     * SwerveSubsystem
-     * .getInstance()
-     * .runOnce(() -> {
-     * SwerveSubsystem.getInstance().masterDriveRawSwitch(true);
-     * }));
-     */
   }
 
   @Override

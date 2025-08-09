@@ -32,7 +32,7 @@ public class PublicationSubsystem extends SubsystemBase {
   public void periodic() {
     var handles = new ArrayList<CompletableFuture<?>>();
     for (IDataClass p : registry) {
-      var handle = Robot.commuincation.publish(p.getPublishTopic(), p.getRawConstructedProtoData());
+      var handle = Robot.communication.publish(p.getPublishTopic(), p.getRawConstructedProtoData());
       handles.add(handle);
     }
 

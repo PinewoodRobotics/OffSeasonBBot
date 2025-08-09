@@ -20,7 +20,8 @@ import pwrup.frc.core.geometry.RotationMath;
 import pwrup.frc.core.hardware.sensor.IGyroscopeLike;
 
 /**
- * @nate the only reason this is a subsystem is because I understand that it would be quite useful to instance one command at a time for this.
+ * @nate the only reason this is a subsystem is because I understand that it
+ *       would be quite useful to instance one command at a time for this.
  */
 public class SwerveSubsystem extends SubsystemBase {
 
