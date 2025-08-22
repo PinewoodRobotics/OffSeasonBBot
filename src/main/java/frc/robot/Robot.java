@@ -1,5 +1,8 @@
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Files;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -12,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.BotConstants;
 import frc.robot.constants.PiConstants;
-import frc.robot.subsystem.background.GlobalPosition;
 
 public class Robot extends LoggedRobot {
 
@@ -43,18 +45,35 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start();
-    communication.begin().join();
   }
 
   @Override
   public void robotInit() {
+    try {
+      communication.begin().join();
+    } catch (Exception e) {
+      System.out.println("Failed to connect to Autobahn server! Erroring out. " + e.getMessage());
+      System.exit(1);
+    }
+
+    try {
+      String config = new String(
+          Files.readAllBytes(PiConstants.configFilePath.toPath()));
+
+      PiConstants.mainPi.setConfig(config);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    PiConstants.mainPi.stopProcesses();
+    PiConstants.mainPi.startProcesses();
+
     m_robotContainer = new RobotContainer();
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    Logger.recordOutput("RobotPose", GlobalPosition.Get());
   }
 
   @Override

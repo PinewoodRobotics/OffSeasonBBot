@@ -181,3 +181,5 @@ lib/vendor/*
 lib/build/*
 lib/*
 lib
+
+node_modules/

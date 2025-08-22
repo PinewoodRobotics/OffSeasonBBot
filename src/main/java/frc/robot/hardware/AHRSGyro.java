@@ -1,5 +1,7 @@
 package frc.robot.hardware;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.I2C;
@@ -9,8 +11,9 @@ import proto.util.Position.Position3d;
 import proto.util.Vector.Vector3;
 import pwrup.frc.core.hardware.sensor.IGyroscopeLike;
 import pwrup.frc.core.online.raspberrypi.coms.IDataSubsystem;
+import pwrup.frc.core.proto.IDataClass;
 
-public class AHRSGyro implements IGyroscopeLike, IDataSubsystem {
+public class AHRSGyro implements IGyroscopeLike, IDataClass {
 
   private final AHRS m_gyro;
   private double xOffset = 0;
@@ -109,6 +112,13 @@ public class AHRSGyro implements IGyroscopeLike, IDataSubsystem {
 
   @Override
   public byte[] getRawConstructedProtoData() {
+    Logger.recordOutput("AHRSGyro/Velocity", getLinearVelocityXYZ());
+    Logger.recordOutput("AHRSGyro/Position", getPoseXYZ());
+    Logger.recordOutput("AHRSGyro/Acceleration", getLinearAccelerationXYZ());
+    Logger.recordOutput("AHRSGyro/Yaw", getYPR()[0]);
+    Logger.recordOutput("AHRSGyro/Pitch", getYPR()[1]);
+    Logger.recordOutput("AHRSGyro/Roll", getYPR()[2]);
+
     return GeneralSensorData.newBuilder().setImu(ImuData.newBuilder()
         .setVelocity(Vector3
             .newBuilder()

@@ -27,5 +27,6 @@
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
   "python.analysis.typeCheckingMode": "basic",
-  "java.debug.settings.onBuildFailureProceed": true
+  "java.debug.settings.onBuildFailureProceed": true,
+  "cursorpyright.analysis.typeCheckingMode": "basic"
 }

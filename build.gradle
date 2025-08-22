@@ -125,7 +125,7 @@ def generateJsonConfig() {
 
     try {
         exec {
-            commandLine "npx", "--offline", "tsx", "config/"
+            commandLine "npm", "run", "config", "--silent"
             standardOutput = stdout
             errorOutput = stderr
             ignoreExitValue = false
@@ -134,7 +134,7 @@ def generateJsonConfig() {
         // Create config.json in the deploy directory
         def deployDir = new File("src/main/deploy")
         deployDir.mkdirs() // Ensure deploy directory exists
-        new File(deployDir, "config.json").text = stdout.toString().trim()
+        new File(deployDir, "config").text = stdout.toString().trim()
     } catch (Exception e) {
         println "Failed to generate config: ${e.message}"
         println "Error Output:\n${stderr.toString().trim()}"

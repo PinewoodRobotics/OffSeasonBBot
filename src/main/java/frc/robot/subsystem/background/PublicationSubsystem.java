@@ -14,7 +14,7 @@ public class PublicationSubsystem extends SubsystemBase {
 
   public static PublicationSubsystem self;
 
-  public static PublicationSubsystem getSelf() {
+  public static PublicationSubsystem GetInstance() {
     if (self == null) {
       self = new PublicationSubsystem();
     }

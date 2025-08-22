@@ -2,6 +2,7 @@ package frc.robot.subsystem;
 
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
 import org.pwrup.SwerveDrive;
 import org.pwrup.util.Config;
 import org.pwrup.util.Vec2;
@@ -43,13 +44,19 @@ public class SwerveSubsystem extends SubsystemBase {
     if (instance == null) {
       instance = new SwerveSubsystem(AHRSGyro.getInstance());
 
-      switch (botMode) {
-        case SIM:
-          break;
+      if (botMode != null) {
+        switch (botMode) {
+          case SIM:
+            break;
+        }
       }
     }
 
     return instance;
+  }
+
+  public static SwerveSubsystem getInstance() {
+    return getInstance(null);
   }
 
   public SwerveSubsystem(IGyroscopeLike gyro) {
@@ -183,6 +190,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // System.out.println("rearleft: " + m_rearLeftSwerveModule.getCurrentAngle());
+    Logger.recordOutput("SwerveSubsystem/Speeds", getChassisSpeeds());
+    Logger.recordOutput("SwerveSubsystem/Positions", getSwerveModulePositions());
+    Logger.recordOutput("SwerveSubsystem/States", getSwerveModuleStates());
   }
 }

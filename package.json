@@ -1,25 +1,18 @@
 {
-  "name": "2025reefscape-new",
-  "version": "1.0.0",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "config": "tsx src/config/index.ts",
+    "generate-thrift": "node scripts/generate-thrift.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PinewoodRobotics/2025Reefscape-NEW.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/PinewoodRobotics/2025Reefscape-NEW/issues"
-  },
-  "homepage": "https://github.com/PinewoodRobotics/2025Reefscape-NEW#readme",
-  "description": "",
   "devDependencies": {
+    "@creditkarma/thrift-typescript": "^3.7.6",
+    "@types/node": "^22.13.1",
     "tsx": "^4.19.3"
+  },
+  "dependencies": {
+    "@creditkarma/thrift-server-core": "^1.0.4",
+    "@types/thrift": "^0.10.17",
+    "canvas": "^3.1.2",
+    "thrift": "^0.22.0"
   }
 }
