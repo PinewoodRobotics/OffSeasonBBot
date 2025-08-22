@@ -17,28 +17,28 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
 
-    AHRSGyro.getInstance();
+    AHRSGyro.GetInstance();
     GlobalPosition.GetInstance();
-    SwerveSubsystem.getInstance();
+    SwerveSubsystem.GetInstance();
     PublicationSubsystem.GetInstance();
 
-    PublicationSubsystem.register(GlobalPosition.GetInstance(), AHRSGyro.getInstance());
+    PublicationSubsystem.register(GlobalPosition.GetInstance(), AHRSGyro.GetInstance());
   }
 
   private void configureBindings() {
     new JoystickButton(controller, XboxController.Button.kA.value)
         .onTrue(new SwerveMoveTeleopController(
-            SwerveSubsystem.getInstance(), controller));
+            SwerveSubsystem.GetInstance(), controller));
 
     new JoystickButton(controller, XboxController.Button.kB.value)
         .onTrue(
             new InstantCommand(
-                () -> SwerveSubsystem.getInstance().resetGyro()));
+                () -> SwerveSubsystem.GetInstance().resetGyro()));
 
     new JoystickButton(controller, XboxController.Button.kX.value)
         .onTrue(
             new InstantCommand(
-                () -> SwerveSubsystem.getInstance().masterDriveRawSwitch(true)));
+                () -> SwerveSubsystem.GetInstance().masterDriveRawSwitch(true)));
   }
 
   public Command getAutonomousCommand() {

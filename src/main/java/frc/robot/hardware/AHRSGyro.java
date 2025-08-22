@@ -22,7 +22,7 @@ public class AHRSGyro implements IGyroscopeLike, IDataClass {
 
   private static AHRSGyro instance;
 
-  public static AHRSGyro getInstance() {
+  public static AHRSGyro GetInstance() {
     if (instance == null) {
       instance = new AHRSGyro(I2C.Port.kMXP);
     }

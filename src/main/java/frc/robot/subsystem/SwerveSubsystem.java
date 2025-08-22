@@ -8,6 +8,7 @@ import org.pwrup.util.Config;
 import org.pwrup.util.Vec2;
 import org.pwrup.util.Wheel;
 
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -40,9 +41,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private static SwerveSubsystem instance;
 
-  public static SwerveSubsystem getInstance(Mode botMode) {
+  public static SwerveSubsystem GetInstance(Mode botMode) {
     if (instance == null) {
-      instance = new SwerveSubsystem(AHRSGyro.getInstance());
+      instance = new SwerveSubsystem(AHRSGyro.GetInstance());
 
       if (botMode != null) {
         switch (botMode) {
@@ -55,8 +56,8 @@ public class SwerveSubsystem extends SubsystemBase {
     return instance;
   }
 
-  public static SwerveSubsystem getInstance() {
-    return getInstance(null);
+  public static SwerveSubsystem GetInstance() {
+    return GetInstance(null);
   }
 
   public SwerveSubsystem(IGyroscopeLike gyro) {

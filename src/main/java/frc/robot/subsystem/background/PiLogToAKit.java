@@ -17,7 +17,7 @@ public class PiLogToAKit extends SubsystemBase {
 
     private static PiLogToAKit self;
 
-    public static PiLogToAKit getSelf() {
+    public static PiLogToAKit GetInstance() {
         if (self == null) {
             self = new PiLogToAKit();
         }

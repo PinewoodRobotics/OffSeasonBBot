@@ -44,10 +44,6 @@ export const kalman_filter: KalmanFilterConfig = {
         measurement_noise_matrix: MatrixUtil.buildMatrix<6, 6>([
           [5, 0.0, 0.0, 0.0, 0.0, 0.0],
           [0.0, 5, 0.0, 0.0, 0.0, 0.0],
-          [0.0, 0.0, 1, 0.0, 0.0, 0.0],
-          [0.0, 0.0, 0.0, 1, 0.0, 0.0],
-          [0.0, 0.0, 0.0, 0.0, 1, 0.0],
-          [0.0, 0.0, 0.0, 0.0, 0.0, 1],
         ]),
       },
     },
@@ -62,8 +58,6 @@ export const kalman_filter: KalmanFilterConfig = {
           [0.0, 0.0, 0.0, 0.0, 0.0, 1],
         ]),
         measurement_noise_matrix: MatrixUtil.buildMatrix<6, 6>([
-          [5, 0.0, 0.0, 0.0, 0.0, 0.0],
-          [0.0, 5, 0.0, 0.0, 0.0, 0.0],
           [0.0, 0.0, 0.1, 0.0, 0.0, 0.0],
           [0.0, 0.0, 0.0, 0.1, 0.0, 0.0],
           [0.0, 0.0, 0.0, 0.0, 0.01, 0.0],
@@ -82,8 +76,6 @@ export const kalman_filter: KalmanFilterConfig = {
           [0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
         ]),
         measurement_noise_matrix: MatrixUtil.buildMatrix<6, 6>([
-          [0.5, 0.0, 0.0, 0.0, 0.0, 0.0],
-          [0.0, 0.5, 0.0, 0.0, 0.0, 0.0],
           [0.0, 0.0, 0.01, 0.0, 0.0, 0.0],
           [0.0, 0.0, 0.0, 0.01, 0.0, 0.0],
           [0.0, 0.0, 0.0, 0.0, 0.2, 0.0],

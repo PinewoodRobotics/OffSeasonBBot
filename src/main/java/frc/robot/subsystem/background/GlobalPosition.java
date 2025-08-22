@@ -50,7 +50,7 @@ public class GlobalPosition extends SubsystemBase implements IDataClass {
         }
       }
 
-      instance = new GlobalPosition(AHRSGyro.getInstance());
+      instance = new GlobalPosition(AHRSGyro.GetInstance());
     }
 
     return instance;
@@ -62,8 +62,8 @@ public class GlobalPosition extends SubsystemBase implements IDataClass {
 
   public GlobalPosition(IGyroscopeLike gyro) {
     this.gyro = gyro;
-    this.odometry = new SwerveDriveOdometry(SwerveSubsystem.getInstance().getKinematics(),
-        new Rotation2d(Math.toRadians(gyro.getYaw())), SwerveSubsystem.getInstance().getSwerveModulePositions());
+    this.odometry = new SwerveDriveOdometry(SwerveSubsystem.GetInstance().getKinematics(),
+        new Rotation2d(Math.toRadians(gyro.getYaw())), SwerveSubsystem.GetInstance().getSwerveModulePositions());
   }
 
   public static void SetClient(AutobahnClient client) {
@@ -109,17 +109,18 @@ public class GlobalPosition extends SubsystemBase implements IDataClass {
 
   @Override
   public void periodic() {
-    var positions = SwerveSubsystem.getInstance().getSwerveModulePositions();
+    var positions = SwerveSubsystem.GetInstance().getSwerveModulePositions();
     var rawRotation = Rotation2d.fromDegrees(-gyro.getYaw());
     odometry.update(rawRotation, positions);
     lastPose = odometry.getPoseMeters();
 
     Logger.recordOutput("odometry/pose", lastPose);
+    Logger.recordOutput("global/position", lastPose);
   }
 
   @Override
   public byte[] getRawConstructedProtoData() {
-    ChassisSpeeds speeds = SwerveSubsystem.getInstance().getChassisSpeeds();
+    ChassisSpeeds speeds = SwerveSubsystem.GetInstance().getChassisSpeeds();
 
     return GeneralSensorData.newBuilder().setOdometry(OdometryData.newBuilder()
         .setVelocity(Vector2
