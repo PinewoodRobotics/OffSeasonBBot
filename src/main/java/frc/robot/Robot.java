@@ -19,9 +19,10 @@ import frc.robot.constants.PiConstants;
 public class Robot extends LoggedRobot {
 
   private Command m_autonomousCommand;
-  public static AutobahnClient communication = new AutobahnClient(PiConstants.mainPiAddr);
-
   private RobotContainer m_robotContainer;
+  private String configContents;
+
+  public static AutobahnClient communication = new AutobahnClient(PiConstants.AutobahnConfig.autobahnServerAddr);
   // final XboxController m_controller = new XboxController(3);
 
   public Robot() {
@@ -45,28 +46,21 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start();
+
+    try {
+      configContents = new String(
+          Files.readAllBytes(PiConstants.configFilePath.toPath()));
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
   }
 
   @Override
   public void robotInit() {
-    try {
-      communication.begin().join();
-    } catch (Exception e) {
-      System.out.println("Failed to connect to Autobahn server! Erroring out. " + e.getMessage());
-      System.exit(1);
-    }
-
-    try {
-      String config = new String(
-          Files.readAllBytes(PiConstants.configFilePath.toPath()));
-
-      PiConstants.mainPi.setConfig(config);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    PiConstants.mainPi.stopProcesses();
-    PiConstants.mainPi.startProcesses();
+    communication.begin().join();
+    PiConstants.network.setConfig(configContents);
+    PiConstants.network.restartAllPis();
 
     m_robotContainer = new RobotContainer();
   }
@@ -74,6 +68,11 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
+    if (!communication.isConnected()) {
+      System.out.println("Not connected to Autobahn server! Erroring out.");
+      System.exit(1);
+    }
   }
 
   @Override

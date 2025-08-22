@@ -13,9 +13,8 @@ public class SwerveMoveTeleopController extends Command {
   private final XboxController controller;
 
   public SwerveMoveTeleopController(
-    SwerveSubsystem swerveSubsystem,
-    XboxController controller
-  ) {
+      SwerveSubsystem swerveSubsystem,
+      XboxController controller) {
     this.m_swerveSubsystem = swerveSubsystem;
     this.controller = controller;
 
@@ -24,25 +23,20 @@ public class SwerveMoveTeleopController extends Command {
 
   @Override
   public void execute() {
-    double joystickRotation = TranslationMath.minValue(
-      controller.getRawAxis(XboxController.Axis.kRightX.value),
-      SwerveConstants.kRotMinValue
-    );
+    double joystickRotation = Math.min(
+        controller.getRawAxis(XboxController.Axis.kRightX.value),
+        SwerveConstants.kRotMinValue);
 
     m_swerveSubsystem.drive(
-      new Vec2(
-        TranslationMath.minValue(
-          controller.getRawAxis(XboxController.Axis.kLeftY.value) * -1,
-          SwerveConstants.kXSpeedMinValue
-        ),
-        TranslationMath.minValue(
-          controller.getRawAxis(XboxController.Axis.kLeftX.value),
-          SwerveConstants.kYSpeedMinValue
-        )
-      ),
-      joystickRotation,
-      0.2
-    );
+        new Vec2(
+            Math.min(
+                controller.getRawAxis(XboxController.Axis.kLeftY.value) * -1,
+                SwerveConstants.kXSpeedMinValue),
+            Math.min(
+                controller.getRawAxis(XboxController.Axis.kLeftX.value),
+                SwerveConstants.kYSpeedMinValue)),
+        joystickRotation,
+        0.2);
   }
 
   @Override

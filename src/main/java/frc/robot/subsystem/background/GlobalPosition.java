@@ -71,7 +71,7 @@ public class GlobalPosition extends SubsystemBase implements IDataClass {
   }
 
   public static void Initialize() {
-    Robot.communication.subscribe(PiConstants.poseSubscribeTopics,
+    Robot.communication.subscribe(PiConstants.AutobahnConfig.poseSubscribeTopic,
         NamedCallback.FromConsumer(GlobalPosition::subscription));
   }
 

@@ -69,7 +69,6 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation 'com.github.godbrigero:autobahn_client:639ac3e8e6'
 }
 
 buildDynamically("./config.ini")
@@ -103,10 +102,24 @@ tasks.withType(JavaCompile) {
 }
 
 def buildDynamically(configFilePath) {
+    def stdout = new ByteArrayOutputStream()
+    def stderr = new ByteArrayOutputStream()
+    try {
         exec {
-        commandLine "python3", "scripts/clone_and_build_repos.py", "--config-file-path", configFilePath
-        standardOutput = new ByteArrayOutputStream()
-        errorOutput = new ByteArrayOutputStream()
+            commandLine "python3", "scripts/clone_and_build_repos.py", "--config-file-path", configFilePath
+            standardOutput = stdout
+            errorOutput = stderr
+            ignoreExitValue = true
+        }
+        if (stdout.size() > 0) {
+            println "Python script output:\n${stdout.toString().trim()}"
+        }
+
+        if (stderr.size() > 0) {
+            // println "Python script error output:\n${stderr.toString().trim()}"
+            throw new Exception(stderr.toString().trim())
+        }
+    } catch (Exception e) {
     }
 
     def jarFiles = fileTree(dir: "lib/build", include: '*.jar')

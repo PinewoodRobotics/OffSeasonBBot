@@ -26,7 +26,8 @@ public class PiLogToAKit extends SubsystemBase {
 
     public PiLogToAKit() {
         super();
-        Robot.communication.subscribe(PiConstants.piTechnicalLogTopic, NamedCallback.FromConsumer(this::subscription));
+        Robot.communication.subscribe(PiConstants.AutobahnConfig.piTechnicalLogTopic,
+                NamedCallback.FromConsumer(this::subscription));
     }
 
     private void subscription(byte[] data) {
