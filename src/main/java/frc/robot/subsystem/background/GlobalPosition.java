@@ -72,15 +72,18 @@ public class GlobalPosition extends SubsystemBase implements IDataClass {
 
   public static void Initialize() {
     Robot.communication.subscribe(PiConstants.AutobahnConfig.poseSubscribeTopic,
-        NamedCallback.FromConsumer(GlobalPosition::subscription));
+        NamedCallback.FromConsumer(GlobalPosition::subscription)).join();
   }
 
   private static void subscription(byte[] data) {
     RobotPosition position = null;
+
     try {
       position = RobotPosition.parseFrom(data);
     } catch (InvalidProtocolBufferException e) {
+      System.err.println("Invalid protocol buffer exception GlobalPosition.subscription()");
       e.printStackTrace();
+      return;
     }
 
     assert position != null;
@@ -115,12 +118,14 @@ public class GlobalPosition extends SubsystemBase implements IDataClass {
     lastPose = odometry.getPoseMeters();
 
     Logger.recordOutput("odometry/pose", lastPose);
-    Logger.recordOutput("global/position", lastPose);
+    Logger.recordOutput("global/position", lastEstimatedRobotPose);
   }
 
   @Override
   public byte[] getRawConstructedProtoData() {
-    ChassisSpeeds speeds = SwerveSubsystem.GetInstance().getChassisSpeeds();
+    var rawRotation = Rotation2d.fromDegrees(-gyro.getYaw());
+    ChassisSpeeds speeds = SwerveSubsystem.GetInstance().getGlobalChassisSpeeds(rawRotation);
+    Logger.recordOutput("odometry/speeds", speeds);
 
     return GeneralSensorData.newBuilder().setOdometry(OdometryData.newBuilder()
         .setVelocity(Vector2

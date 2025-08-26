@@ -8,7 +8,7 @@ import org.pwrup.util.Config;
 import org.pwrup.util.Vec2;
 import org.pwrup.util.Wheel;
 
-import edu.wpi.first.math.estimator.PoseEstimator;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -155,6 +155,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public ChassisSpeeds getChassisSpeeds() {
     return kinematics.toChassisSpeeds(getSwerveModuleStates());
+  }
+
+  public ChassisSpeeds getGlobalChassisSpeeds(Rotation2d heading) {
+    return ChassisSpeeds.fromRobotRelativeSpeeds(getChassisSpeeds(), heading);
   }
 
   public SwerveDriveKinematics getKinematics() {

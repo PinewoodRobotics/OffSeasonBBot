@@ -1,10 +1,11 @@
 package frc.robot.command;
 
+import org.pwrup.util.Vec2;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.SwerveConstants;
 import frc.robot.subsystem.SwerveSubsystem;
-import org.pwrup.util.Vec2;
 import pwrup.frc.core.geometry.TranslationMath;
 
 public class SwerveMoveTeleopController extends Command {
@@ -23,16 +24,16 @@ public class SwerveMoveTeleopController extends Command {
 
   @Override
   public void execute() {
-    double joystickRotation = Math.min(
+    double joystickRotation = TranslationMath.applyMinimumThreshold(
         controller.getRawAxis(XboxController.Axis.kRightX.value),
         SwerveConstants.kRotMinValue);
 
     m_swerveSubsystem.drive(
         new Vec2(
-            Math.min(
+            TranslationMath.applyMinimumThreshold(
                 controller.getRawAxis(XboxController.Axis.kLeftY.value) * -1,
                 SwerveConstants.kXSpeedMinValue),
-            Math.min(
+            TranslationMath.applyMinimumThreshold(
                 controller.getRawAxis(XboxController.Axis.kLeftX.value),
                 SwerveConstants.kYSpeedMinValue)),
         joystickRotation,

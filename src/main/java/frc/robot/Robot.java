@@ -22,7 +22,7 @@ public class Robot extends LoggedRobot {
   private RobotContainer m_robotContainer;
   private String configContents;
 
-  public static AutobahnClient communication = new AutobahnClient(PiConstants.AutobahnConfig.autobahnServerAddr);
+  public static AutobahnClient communication = new AutobahnClient(PiConstants.network.getMainPi());
   // final XboxController m_controller = new XboxController(3);
 
   public Robot() {
@@ -69,8 +69,11 @@ public class Robot extends LoggedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
+    Logger.recordOutput("autobahn/connection", communication.isConnected());
+
+    // TODO: make this nonblockable
     if (!communication.isConnected()) {
-      System.out.println("Not connected to Autobahn server! Erroring out.");
+      System.err.println("Not connected to Autobahn server! Erroring out.");
       System.exit(1);
     }
   }

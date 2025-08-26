@@ -22,6 +22,8 @@ public class RobotContainer {
     SwerveSubsystem.GetInstance();
     PublicationSubsystem.GetInstance();
 
+    GlobalPosition.Initialize();
+
     PublicationSubsystem.register(GlobalPosition.GetInstance(), AHRSGyro.GetInstance());
   }
 
